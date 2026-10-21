@@ -27,3 +27,17 @@ The bot connects after login. If Discord drops the voice connection, it retries 
 GitHub stores the source code; it does not run the bot. To keep the bot online 24/7, deploy it as a long-running worker on a host that does not sleep. Configure DISCORD_BOT_TOKEN as that host's secret/environment variable and DISCORD_VOICE_CHANNEL_ID as an environment variable, then use npm start as the start command. Do not put the token in GitHub Actions, source files, or this repository.
 
 If the bot token was ever committed publicly, reset it in the Discord Developer Portal before running the bot.
+
+## Optional official desktop RPC
+
+RPC DISCORD.js sets a custom Playing activity through Discord's local IPC. It uses your Discord application's Client ID, not a personal-account token. It does not set or imitate Spotify's real Listening status; for that, use Discord's Spotify connection.
+
+1. Create or select an application in the Discord Developer Portal and copy its Application ID.
+2. Set DISCORD_CLIENT_ID, RPC_DETAILS, and RPC_STATE in your local .env file.
+3. Open and sign in to the Discord desktop app on the same computer, and enable activity sharing in Discord settings.
+4. From this repository, run:
+
+    npm install
+    npm run rpc
+
+This script must run on the same computer as Discord Desktop because it connects over local IPC. It will keep retrying if Discord is closed, and clears the activity when stopped with Ctrl+C. Do not deploy this local RPC script to GitHub Actions or a remote Replit server.
